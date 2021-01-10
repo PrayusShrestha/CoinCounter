@@ -13,7 +13,7 @@ public class CoinRadiusMatrix {
     private static final double QUARTER_RADIUS = 23.88;
     private static final double LOONIE_RADIUS = 26.5;
     private static final double TOONIE_RADIUS = 28;
-    private static final double ERROR = 0.05;
+    private static final double ERROR = 0.1;
 
     private static String smallest;
 

@@ -33,8 +33,8 @@ public class Classifier {
         coinRatios.put(1.25, "Loonie");
         coinRatios.put(1.110, "Loonie");
 
-        coinRatios.put(1.324, "Quarters");
-        coinRatios.put(1.126, "Quarters");
+        coinRatios.put(1.324, "Quarter");
+        coinRatios.put(1.126, "Quarter");
 
         coinRatios.put(1.176, "Nickel");
     }
