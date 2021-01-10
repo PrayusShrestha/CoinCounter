@@ -1,7 +1,12 @@
 package packageInterface;
 
 
+import java.lang.reflect.Array;
 import java.util.*;
+
+import denominator.CoinRadiusMatrix;
+import denominator.Exceptions.RatioNotFoundException;
+import denominator.models.Classifier;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
@@ -36,7 +41,11 @@ public class UI extends Application {
     private static HBox userControls = new HBox(22.5);
     private static VBox result = new VBox();
     private static String imgLoc;
-    private TableView resultTable = new TableView();
+    private static TableView resultTable = new TableView();
+    private static Integer smallestCoinValue = null;
+
+    private static HashMap<String, Integer> coinCount = null;
+    private static Integer total = null;
 
     public void start(Stage stage) throws Exception{
 
@@ -77,14 +86,55 @@ public class UI extends Application {
         Button runButton = new Button("Coin Count");
         runButton.addEventFilter(MouseEvent.MOUSE_CLICKED, event ->{
             if(smallestCoinChoices.getValue() != null && imgLoc != null){
+
+                smallestCoinValue = dictionary.get(smallestCoinChoices.getValue());
+
                 System.out.println("Success");
                 //TODO: Implement other classes
 
-                System.out.println(imgLoc.substring(5));
+                //System.out.println(imgLoc.substring(5));
 
                 Mat src = Imgcodecs.imread(imgLoc.substring(5), CV_LOAD_IMAGE_COLOR);
 
-                System.out.println(CoinFinder.findCoins(src).toString());
+                ArrayList<Integer> sizes = CoinFinder.findCoins(src);
+
+                //System.out.println(sizes.toString());
+
+                HashMap<Double,Integer> coins = null;
+
+                try{
+                     coins = CoinRadiusMatrix.countRatio(sizes);
+                }catch (RatioNotFoundException e) {
+                    //TODO
+                }
+
+                String smallestCoinName = "";
+
+                switch (smallestCoinValue){
+                    case 10: smallestCoinName = "Dime"; break;
+                    case 5: smallestCoinName = "Nickel"; break;
+                    case 25: smallestCoinName = "Quartrer"; break;
+                    case 1: smallestCoinName = "Loonie"; break;
+                    case 2: smallestCoinName = "Toonie"; break;
+                }
+
+                Classifier classifier = new Classifier(coins, smallestCoinName);
+
+
+                coinCount = classifier.classify(coins);
+                total = classifier.counter(coinCount);
+
+                System.out.println();
+
+                for(Map.Entry<String, Integer> entry : coinCount.entrySet()) {
+                    String key = entry.getKey();
+                    int value = entry.getValue();
+                    System.out.println("Coin Type: " + key + "Amount: " + value);
+
+                }
+
+
+
             }
             else if(imgLoc == null){
                 final Stage popUp = new Stage();
@@ -110,10 +160,12 @@ public class UI extends Application {
                 popUp.show();
             }
 
+
+
         });
 
 
-        Integer smallestCoinValue = dictionary.get(smallestCoinChoices.getValue());
+
 
         userControls.getChildren().addAll(filler,uploadButton,smallestCoinChoices,runButton);
 

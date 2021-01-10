@@ -2,6 +2,7 @@ package denominator;
 
 import denominator.Exceptions.RatioNotFoundException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,13 +24,13 @@ public class CoinRadiusMatrix {
 
 
     // group ratios using smallest radius as reference (hashmap is <ratio, count>)
-    public HashMap<Double,Integer> countRatio(List<Integer> radiusList) throws RatioNotFoundException {
+    public static HashMap<Double,Integer> countRatio(ArrayList<Integer> radiusList) throws RatioNotFoundException {
         double min = findMin(radiusList);
         HashMap<Double, Integer> rsf = new HashMap<Double, Integer>();
 
         for (Integer radius : radiusList) {
             double ratio = radius / min;
-            System.out.println(min + ", " + radius + ". " + radius/min);
+            //System.out.println(min + ", " + radius + ". " + radius/min);
             // TODO: Section off the checks based on what the samllest coin value is
             if (Math.abs(ratio - 1) < ERROR) {
                 putter(rsf, 1.0);

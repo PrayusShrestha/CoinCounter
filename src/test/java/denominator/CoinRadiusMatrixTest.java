@@ -13,7 +13,7 @@ class CoinRadiusMatrixTest {
 
     @Test
     void simpleInput() {
-        List<Integer> testList = new ArrayList<Integer>();
+        ArrayList<Integer> testList = new ArrayList<Integer>();
         CoinRadiusMatrix matrix = new CoinRadiusMatrix("Dime");
 
         for (int i = 0; i < 3; i++) {
@@ -34,7 +34,7 @@ class CoinRadiusMatrixTest {
 
     @Test
     void standardInput() {
-        List<Integer> testList = new ArrayList<Integer>();
+        ArrayList<Integer> testList = new ArrayList<Integer>();
         CoinRadiusMatrix matrix = new CoinRadiusMatrix("Dime");
 
         testList.add(211);
@@ -60,7 +60,7 @@ class CoinRadiusMatrixTest {
 
     @Test
     void realInput() {
-        List<Integer> testList = new ArrayList<Integer>();
+        ArrayList<Integer> testList = new ArrayList<Integer>();
         CoinRadiusMatrix matrix = new CoinRadiusMatrix("Dime");
 // [255, 276, 229, 233, 227, 201, 168, 200, 177]
         testList.add(255);
