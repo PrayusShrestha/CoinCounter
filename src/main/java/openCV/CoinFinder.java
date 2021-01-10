@@ -65,16 +65,16 @@ public class CoinFinder {
         return list;
     }
 
-    public static void main(String[] args) throws InterruptedException { //TODO: for debugging
-
-        OpenCV.loadShared();
-
-        String file = "src/main/resources/image1.jpg";
-        Mat src = Imgcodecs.imread(file, CV_LOAD_IMAGE_COLOR);
-
-        System.out.println(findCoins(src).toString());
-
-
-    }
+//    public static void main(String[] args) throws InterruptedException { //TODO: for debugging
+//
+//        OpenCV.loadShared();
+//
+//        String file = "src/main/resources/image1.jpg";
+//        Mat src = Imgcodecs.imread(file, CV_LOAD_IMAGE_COLOR);
+//
+//        System.out.println(findCoins(src).toString());
+//
+//
+//    }
 
 }

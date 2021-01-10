@@ -3,19 +3,28 @@ package packageInterface;
 
 import java.util.*;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Button;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import java.io.File;
+
+import openCV.CoinFinder;
 import org.opencv.core.Mat;
 import org.opencv.imgcodecs.Imgcodecs;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import nu.pattern.OpenCV;
 
 
 
@@ -23,16 +32,19 @@ public class UI extends Application {
 
     private static BorderPane backgroundPane = new BorderPane();
     public static Image coinImg;
-    private static Pane resultPane = new Pane();
-    private static HBox userControls = new HBox();
-    private static VBox result = new VBox(10);
-
+    private static HBox userControls = new HBox(22.5);
+    private static VBox result = new VBox();
+    private static String imgLoc;
+    private TableView resultTable = new TableView();
+    private static Mat src;
 
     public void start(Stage stage) throws Exception{
+
 
         Button uploadButton = new Button("Upload Image");
         Label uploadLabel = new Label();
         uploadLabel.setPrefWidth(50);
+        Text filler = new Text();
 
         ComboBox smallestCoinChoices = new ComboBox();
 
@@ -57,30 +69,69 @@ public class UI extends Application {
             File selectedFile = imgUploader.showOpenDialog(null);
 
             if(selectedFile != null){
-                //nu.pattern.OpenCV.loadShared();
-                String imgLoc = selectedFile.toURI().toString();
-                System.out.println();
-                uploadLabel.setText(imgLoc);
+                OpenCV.loadShared();
+                imgLoc = selectedFile.toURI().toString();
+                System.out.println("img uploaded");
                 coinImg = new Image(imgLoc);
-                Mat src = Imgcodecs.imread(imgLoc);
+                src = Imgcodecs.imread(imgLoc);
             }
         });
+        Button runButton = new Button("Coin Count");
+        runButton.addEventFilter(MouseEvent.MOUSE_CLICKED, event ->{
+            if(smallestCoinChoices.getValue() != null && imgLoc != null){
+                System.out.println("Success");
+                //TODO: Implement other classes
 
-        Button runButton = new Button("Count the Coins!");
-//        if(smallestCoinChoices.getValue() != null){
-//            runButton.addEventFilter(MouseEvent.MOUSE_CLICKED, event ->{
-//                System.out.println(dictionary.get(smallestCoinChoices.getValue()));
-//            });
-//        }
+                ArrayList<Integer> coinResults = CoinFinder.findCoins(src);
 
-        //int smallestCoinValue = dictionary.get(smallestCoinChoices.getValue());
+                System.out.println(coinResults.toString());
+            }
+            else if(imgLoc == null){
+                final Stage popUp = new Stage();
+                popUp.initModality(Modality.APPLICATION_MODAL);
+                popUp.initOwner(stage);
+                VBox popUpBox = new VBox(20);
+                popUpBox.getChildren().add(new Text("Please upload a valid image."));
+                Scene popUpScene = new Scene(popUpBox, 200, 50);
+                popUp.setScene(popUpScene);
+                popUp.show();
 
-        userControls.getChildren().addAll(uploadButton,uploadLabel,smallestCoinChoices);
-        result.getChildren().add(runButton);
+            }
 
-        result.setBackground((new Background(new BackgroundFill(Color.BLUE,null,null))));
-        backgroundPane.setRight(result);
-        backgroundPane.setBottom(userControls);
+            else if(smallestCoinChoices.getValue() == null){
+                final Stage popUp = new Stage();
+                popUp.initModality(Modality.APPLICATION_MODAL);
+                popUp.initOwner(stage);
+                VBox popUpBox = new VBox(20);
+                popUpBox.getChildren().add(new Text("Please choose the least valued coin."));
+                Scene popUpScene = new Scene(popUpBox, 200, 50);
+                popUp.setScene(popUpScene);
+                popUp.setResizable(false);
+                popUp.show();
+            }
+
+        });
+
+
+        Integer smallestCoinValue = dictionary.get(smallestCoinChoices.getValue());
+
+        userControls.getChildren().addAll(filler,uploadButton,smallestCoinChoices,runButton);
+
+        result.setAlignment(Pos.CENTER);
+        Label resultLabel = new Label("Result");
+
+
+        resultTable.setEditable(false);
+        TableColumn coinTypeCol = new TableColumn("Coin Type");
+        TableColumn coinAmountCol = new TableColumn("Amount");
+        resultTable.getColumns().addAll(coinTypeCol,coinAmountCol);
+
+        coinTypeCol.setMinWidth(200);
+        coinAmountCol.setMinWidth(200);
+
+        result.getChildren().addAll(resultLabel,resultTable,userControls);
+
+        backgroundPane.setCenter(result);
 
         Scene inputScene = new Scene(backgroundPane,400,500);
 
@@ -91,15 +142,6 @@ public class UI extends Application {
 
     }
 
-    private static boolean isSmallestChecked(ComboBox comboBox){
-        if(comboBox.getValue() != null){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
 
     public static void main(String[] args){
         launch(args);
@@ -107,3 +149,4 @@ public class UI extends Application {
     }
 
 }
+
