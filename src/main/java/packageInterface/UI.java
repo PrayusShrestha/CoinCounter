@@ -138,8 +138,6 @@ public class UI extends Application {
         stage.setScene(inputScene);
         stage.show();
 
-
-
     }
 
 
