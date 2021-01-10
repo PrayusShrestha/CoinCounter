@@ -1,7 +1,12 @@
 package packageInterface;
 
 
+import java.lang.reflect.Array;
 import java.util.*;
+
+import denominator.CoinRadiusMatrix;
+import denominator.Exceptions.RatioNotFoundException;
+import denominator.models.Classifier;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
@@ -36,7 +41,11 @@ public class UI extends Application {
     private static HBox userControls = new HBox(22.5);
     private static VBox result = new VBox();
     private static String imgLoc;
-    private TableView resultTable = new TableView();
+    private static TableView resultTable = new TableView();
+    private static String smallestCoinValue = "";
+
+    private static HashMap<String, Integer> coinCount = null;
+    private static Integer total = null;
 
     public void start(Stage stage) throws Exception{
 
@@ -84,7 +93,25 @@ public class UI extends Application {
 
                 Mat src = Imgcodecs.imread(imgLoc.substring(5), CV_LOAD_IMAGE_COLOR);
 
-                System.out.println(CoinFinder.findCoins(src).toString());
+                ArrayList<Integer> sizes = CoinFinder.findCoins(src);
+
+                System.out.println(sizes.toString());
+
+                HashMap<Double,Integer> coins = null;
+
+                try{
+                     coins = CoinRadiusMatrix.countRatio(sizes);
+                }catch (RatioNotFoundException e) {
+                    //TODO
+                }
+
+                Classifier classifier = new Classifier(coins, smallestCoinValue);
+
+                coinCount = classifier.classify(coins);
+                total = classifier.counter(coinCount);
+
+                
+
             }
             else if(imgLoc == null){
                 final Stage popUp = new Stage();
@@ -113,7 +140,7 @@ public class UI extends Application {
         });
 
 
-        Integer smallestCoinValue = dictionary.get(smallestCoinChoices.getValue());
+        smallestCoinValue = Integer.toString(dictionary.get(smallestCoinChoices.getValue()));
 
         userControls.getChildren().addAll(filler,uploadButton,smallestCoinChoices,runButton);
 
