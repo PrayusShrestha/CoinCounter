@@ -29,6 +29,20 @@ class ClassifierTest {
 
         System.out.println(output.toString());
     }
+    @Test
+    void classifyTestRealInput() {
+        input.put(1.176, 2);
+        input.put(1.0, 2);
+        input.put(1.324, 3);
+        input.put(1.553, 1);
+        input.put(1.47, 1);
+
+        classifier = new Classifier(input, "Dime");
+
+        HashMap<String, Integer> output = classifier.classify(input);
+
+        System.out.println(output.toString());
+    }
 
     @Test
     void counterTest() {
