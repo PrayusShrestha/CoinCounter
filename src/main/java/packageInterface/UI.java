@@ -50,8 +50,8 @@ public class UI extends Application {
 
         LinkedHashMap<String, Integer> dictionary = new LinkedHashMap<String, Integer>();
 
-        dictionary.put("Nickel - 5¢", 5);
         dictionary.put("Dime - 10¢", 10);
+        dictionary.put("Nickel - 5¢", 5);
         dictionary.put("Quarter - 25¢", 25);
         dictionary.put("Loonie - $1", 1);
         dictionary.put("Toonie - $2", 2);

@@ -10,7 +10,6 @@ import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
 
-import static org.opencv.imgcodecs.Imgcodecs.CV_LOAD_IMAGE_COLOR;
 import static org.opencv.imgproc.Imgproc.COLOR_RGB2GRAY;
 import static org.opencv.imgproc.Imgproc.CV_HOUGH_GRADIENT;
 
@@ -33,8 +32,6 @@ public class CoinFinder {
         Imgproc.cvtColor(mat, mat, COLOR_RGB2GRAY);
         if(renderSteps) Imgcodecs.imwrite("gray.jpg", mat);
 
-//        Imgproc.blur(mat, blur, new Size(9,9));
-//        if(renderSteps) Imgcodecs.imwrite("blur.jpg", blur);
         Imgproc.GaussianBlur(mat, blur, new Size(13, 13), 0, 0);
         Imgproc.GaussianBlur(blur, blur, new Size(9, 9), 0, 0);
         if(renderSteps) Imgcodecs.imwrite("blur.jpg", blur);
@@ -67,7 +64,7 @@ public class CoinFinder {
         return list;
     }
 
-//    public static void main(String[] args) throws InterruptedException { //TODO: for debugging
+//    public static void main(String[] args) throws InterruptedException { //for debugging
 //
 //        OpenCV.loadShared();
 //
