@@ -123,7 +123,7 @@ public class UI extends Application {
 
                 coinCount = classifier.classify(coins);
                 total = classifier.counter(coinCount);
-                
+
                 System.out.println();
 
                 for(Map.Entry<String, Integer> entry : coinCount.entrySet()) {
