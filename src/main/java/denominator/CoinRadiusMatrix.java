@@ -30,7 +30,7 @@ public class CoinRadiusMatrix {
 
         for (Integer radius : radiusList) {
             double ratio = radius / min;
-            System.out.println(min + ", " + radius + ". " + radius/min);
+            //System.out.println(min + ", " + radius + ". " + radius/min);
             // TODO: Section off the checks based on what the samllest coin value is
             if (Math.abs(ratio - 1) < ERROR) {
                 putter(rsf, 1.0);
