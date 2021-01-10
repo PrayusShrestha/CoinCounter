@@ -26,6 +26,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import nu.pattern.OpenCV;
 
+import static org.opencv.imgcodecs.Imgcodecs.CV_LOAD_IMAGE_COLOR;
 
 
 public class UI extends Application {
@@ -36,7 +37,6 @@ public class UI extends Application {
     private static VBox result = new VBox();
     private static String imgLoc;
     private TableView resultTable = new TableView();
-    private static Mat src;
 
     public void start(Stage stage) throws Exception{
 
@@ -72,8 +72,6 @@ public class UI extends Application {
                 OpenCV.loadShared();
                 imgLoc = selectedFile.toURI().toString();
                 System.out.println("img uploaded");
-                coinImg = new Image(imgLoc);
-                src = Imgcodecs.imread(imgLoc);
             }
         });
         Button runButton = new Button("Coin Count");
@@ -82,9 +80,11 @@ public class UI extends Application {
                 System.out.println("Success");
                 //TODO: Implement other classes
 
-                ArrayList<Integer> coinResults = CoinFinder.findCoins(src);
+                System.out.println(imgLoc.substring(5));
 
-                System.out.println(coinResults.toString());
+                Mat src = Imgcodecs.imread(imgLoc.substring(5), CV_LOAD_IMAGE_COLOR);
+
+                System.out.println(CoinFinder.findCoins(src).toString());
             }
             else if(imgLoc == null){
                 final Stage popUp = new Stage();

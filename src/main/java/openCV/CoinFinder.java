@@ -28,6 +28,8 @@ public class CoinFinder {
         Mat proc = new Mat();
         Mat circles = new Mat();
 
+        if(renderSteps) Imgcodecs.imwrite("in.jpg", mat);
+
         Imgproc.cvtColor(mat, mat, COLOR_RGB2GRAY);
         if(renderSteps) Imgcodecs.imwrite("gray.jpg", mat);
 
